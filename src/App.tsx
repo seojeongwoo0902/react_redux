@@ -1,7 +1,7 @@
 import { createStore } from "redux";
 const form = document.querySelector("form");
 const input = document.querySelector("input");
-const ul = document.querySelector("ul");
+
 
 const ADD_TODO = "ADD_TODO"
 const DELETE_TODO = "DELETE_TODO"
@@ -9,20 +9,21 @@ const DELETE_TODO = "DELETE_TODO"
 
 function App() {
   const reducer = (state = [], action: any): any => {
+    action.id = Date.now()
     switch (action.type) {
       case ADD_TODO:
-        return [...state, { text: action.text }]
+        return [...state, { text: action.text, id: action.id }]
       case DELETE_TODO:
         return []
       default:
         return state
     }
   }
-  const store = createStore(reducer)
+  const store = createStore<never[], any, unknown, unknown>(reducer)
 
-  store.subscribe(() => {
+  store.subscribe(() =>
     console.log(store.getState())
-  })
+  )
 
   const onSubmit = (e: any) => {
     e.preventDefault()
